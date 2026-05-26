@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paresh Jayaram Gowda — Workday & Banner integration engineer</title>
+<meta name="description" content="Workday integration developer and Banner ERP data engineer. 14+ integrations shipped, certified in Workday Studio, Reporting, Extend, and Orchestrate." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-elev: #111111;
+    --bg-elev-2: #161616;
+    --line: #1f1f1f;
+    --line-bright: #2a2a2a;
+    --ink: #f5f3ee;
+    --ink-mute: #a0a0a0;
+    --ink-dim: #666666;
+    --accent: #ff5a1f;
+    --accent-soft: rgba(255, 90, 31, 0.12);
+    --accent-text: #ff7e4a;
+    --workday: #ffb547;
+    --workday-soft: rgba(255, 181, 71, 0.10);
+    --display: 'Fraunces', 'Times New Roman', serif;
+    --body: 'Inter Tight', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay — subtle, gives texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.025;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 20px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(10, 10, 10, 0.6);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  nav .logo { color: var(--ink); font-weight: 500; }
+  nav .logo span { color: var(--accent); }
+  nav .links { display: flex; gap: 32px; }
+  nav .links a {
+    color: var(--ink-mute);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  nav .links a:hover { color: var(--ink); }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 120px 40px; max-width: 1200px; margin: 0 auto; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .eyebrow::before {
+    content: ''; width: 24px; height: 1px; background: var(--ink-dim);
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    padding: 180px 40px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-name {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(56px, 11vw, 156px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin-bottom: 32px;
+  }
+  .hero-name .italic { font-style: italic; font-weight: 400; }
+  .hero-name .accent { color: var(--accent); }
+  .hero-sub {
+    font-family: var(--body);
+    font-size: clamp(18px, 2vw, 22px);
+    color: var(--ink-mute);
+    max-width: 640px;
+    line-height: 1.5;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .hero-sub strong { color: var(--ink); font-weight: 500; }
+  .hero-meta {
+    display: flex; gap: 40px; flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-dim);
+    letter-spacing: 0.5px;
+  }
+  .hero-meta div { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta div span:last-child { color: var(--ink); font-weight: 500; }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px; left: 40px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 1px;
+    animation: float 2.4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); opacity: 0.6; }
+    50% { transform: translateY(6px); opacity: 1; }
+  }
+
+  /* Fade-in on load */
+  .fade-stagger > * {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .fade-stagger > *:nth-child(1) { animation-delay: 0.1s; }
+  .fade-stagger > *:nth-child(2) { animation-delay: 0.25s; }
+  .fade-stagger > *:nth-child(3) { animation-delay: 0.4s; }
+  .fade-stagger > *:nth-child(4) { animation-delay: 0.55s; }
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== STATS BAND ===== */
+  .stats-band {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 60px 40px;
+    margin: 0;
+    max-width: none;
+    background: var(--bg-elev);
+  }
+  .stats-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 60px;
+  }
+  .stat-num {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(48px, 6vw, 72px);
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .stat-num .unit {
+    font-size: 0.5em;
+    color: var(--accent);
+    font-style: italic;
+    margin-left: 4px;
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1.4;
+  }
+
+  /* ===== WORKDAY SPOTLIGHT ===== */
+  .workday-spotlight {
+    position: relative;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-elev) 100%);
+    padding-top: 140px;
+    padding-bottom: 140px;
+  }
+  .workday-spotlight::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    width: 600px; height: 600px;
+    transform: translate(-50%, -30%);
+    background: radial-gradient(circle, var(--workday-soft) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wd-inner { position: relative; z-index: 1; }
+  .wd-title {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(48px, 7vw, 84px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+    max-width: 900px;
+  }
+  .wd-title .wd-mark {
+    color: var(--workday);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .wd-lede {
+    font-size: 20px;
+    color: var(--ink-mute);
+    max-width: 720px;
+    line-height: 1.6;
+    margin-bottom: 80px;
+    font-weight: 300;
+  }
+  .wd-lede strong { color: var(--ink); font-weight: 500; }
+
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 80px;
+  }
+  .cert {
+    background: var(--bg);
+    padding: 32px 24px;
+    transition: background 0.2s;
+  }
+  .cert:hover { background: var(--bg-elev-2); }
+  .cert-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--workday);
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+  .cert-name {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .cert-desc {
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.5;
+  }
+
+  .wd-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+  }
+  .wd-block h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 28px;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .wd-block p {
+    color: var(--ink-mute);
+    line-height: 1.7;
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+  .wd-block p strong { color: var(--ink); font-weight: 500; }
+  .wd-block ul { list-style: none; }
+  .wd-block li {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex; gap: 12px;
+  }
+  .wd-block li::before {
+    content: '→'; color: var(--workday); flex-shrink: 0;
+  }
+
+  /* ===== PROJECTS ===== */
+  .projects-section { padding-top: 140px; padding-bottom: 80px; }
+  .section-title {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    max-width: 900px;
+  }
+  .section-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .section-intro {
+    font-size: 17px;
+    color: var(--ink-mute);
+    max-width: 640px;
+    margin-bottom: 80px;
+    line-height: 1.6;
+  }
+
+  .project-list {
+    border-top: 1px solid var(--line-bright);
+  }
+  .project {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 140px;
+    gap: 40px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+    cursor: pointer;
+    transition: padding 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s;
+    position: relative;
+  }
+  .project:hover {
+    padding-left: 20px;
+    padding-right: 20px;
+    background: var(--bg-elev);
+  }
+  .project::after {
+    content: '↗';
+    position: absolute;
+    right: 0; top: 40px;
+    color: var(--ink-dim);
+    font-size: 20px;
+    transition: color 0.2s, transform 0.3s;
+  }
+  .project:hover::after {
+    color: var(--accent);
+    transform: translate(-20px, -4px);
+  }
+  .project-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 1px;
+    padding-top: 6px;
+  }
+  .project-title {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .project-title .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--workday);
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .project-desc {
+    color: var(--ink-mute);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .project-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.5px;
+    padding-top: 6px;
+    text-align: right;
+  }
+  .project-meta span { display: block; margin-bottom: 4px; }
+  .project-meta .impact { color: var(--accent-text); font-weight: 500; }
+
+  /* ===== TESTIMONIAL ===== */
+  .testimonial-section {
+    background: var(--bg-elev);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 140px 40px;
+    margin: 0;
+    max-width: none;
+  }
+  .testimonial-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+  .quote-mark {
+    font-family: var(--display);
+    font-size: 120px;
+    line-height: 0.6;
+    color: var(--accent);
+    margin-bottom: 24px;
+    font-style: italic;
+    opacity: 0.4;
+  }
+  .quote-text {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(24px, 3vw, 38px);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+    min-height: 180px;
+    transition: opacity 0.4s;
+  }
+  .quote-text em { font-style: italic; }
+  .quote-attr {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .quote-dots {
+    display: flex; gap: 8px; justify-content: center;
+    margin-top: 48px;
+  }
+  .quote-dot {
+    width: 24px; height: 2px;
+    background: var(--line-bright);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .quote-dot.active { background: var(--accent); }
+
+  /* ===== SKILLS ===== */
+  .skills-section { padding: 140px 40px; }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+  }
+  .skill-col h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line-bright);
+  }
+  .skill-col ul { list-style: none; }
+  .skill-col li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .skill-col li .level {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== CONTACT ===== */
+  .contact-section {
+    padding: 160px 40px 120px;
+    text-align: center;
+  }
+  .contact-title {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(56px, 10vw, 140px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 48px;
+  }
+  .contact-title em { font-style: italic; color: var(--accent); }
+  .contact-links {
+    display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+    margin-top: 48px;
+  }
+  .contact-link {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 16px 32px;
+    border: 1px solid var(--line-bright);
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .contact-link:hover {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 40px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    nav { padding: 16px 20px; }
+    nav .links { gap: 20px; }
+    section, .hero { padding-left: 20px; padding-right: 20px; }
+    .stats-band { padding: 40px 20px; }
+    .stats-inner { grid-template-columns: 1fr 1fr; gap: 40px 24px; }
+    .certs-grid { grid-template-columns: 1fr 1fr; }
+    .wd-breakdown { grid-template-columns: 1fr; gap: 40px; }
+    .project {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 32px 0;
+    }
+    .project::after { display: none; }
+    .project-meta { text-align: left; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .testimonial-section { padding: 80px 20px; }
+    .contact-section { padding: 100px 20px 80px; }
+  }
+  @media (max-width: 600px) {
+    nav .links a:not(:last-child) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">PJG<span>.</span></div>
+  <div class="links">
+    <a href="#workday">Workday</a>
+    <a href="#projects">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="fade-stagger">
+    <div class="eyebrow">Data engineer · Higher education</div>
+    <h1 class="hero-name">
+      Paresh<br/>
+      <span class="italic">Jayaram</span> <span class="accent">Gowda</span><span class="accent">.</span>
+    </h1>
+    <p class="hero-sub">
+      I build <strong>Workday integrations</strong> and the <strong>Banner ERP</strong> pipelines behind them. Currently leading integration work for a major university Workday go-live in July 2026.
+    </p>
+    <div class="hero-meta">
+      <div><span>Role</span><span>Data Engineer</span></div>
+      <div><span>Focus</span><span>Workday Studio · Banner</span></div>
+      <div><span>Stack</span><span>PL/SQL · Python · XSLT</span></div>
+      <div><span>Status</span><span>Open to conversations</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll">↓ scroll</div>
+</section>
+
+<!-- ===== STATS ===== -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num" data-target="14" data-suffix="+"><span>0</span><span class="unit">integrations</span></div>
+      <div class="stat-label">Built single-handedly</div>
+    </div>
+    <div>
+      <div class="stat-num" data-target="4"><span>0</span><span class="unit">certs</span></div>
+      <div class="stat-label">Workday platform</div>
+    </div>
+    <div>
+      <div class="stat-num" data-target="5.3" data-prefix="$" data-suffix="M"><span>0</span></div>
+      <div class="stat-label">Routed to production</div>
+    </div>
+    <div>
+      <div class="stat-num" data-target="1"><span>0</span><span class="unit">go-live</span></div>
+      <div class="stat-label">July 2026 · in flight</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== WORKDAY SPOTLIGHT ===== -->
+<section class="workday-spotlight" id="workday">
+  <div class="wd-inner">
+    <div class="eyebrow">The spotlight</div>
+    <h2 class="wd-title">
+      Trained, certified, and <span class="wd-mark">shipping</span> across the full Workday platform.
+    </h2>
+    <p class="wd-lede">
+      Most integration developers specialize in <strong>one</strong> Workday surface. I work across <strong>four</strong> — and I own the Banner side of every inbound feed too. When the implementation partner couldn't write the Banner extract, I wrote it. When an integration was mine end-to-end, I built both halves.
+    </p>
+
+    <div class="certs-grid">
+      <div class="cert">
+        <div class="cert-num">01</div>
+        <div class="cert-name">Studio</div>
+        <div class="cert-desc">Custom integration logic, SOAP/REST web services, XSLT transformations, error handling.</div>
+      </div>
+      <div class="cert">
+        <div class="cert-num">02</div>
+        <div class="cert-name">Reporting</div>
+        <div class="cert-desc">Advanced report writer, calculated fields, composite reports as integration sources.</div>
+      </div>
+      <div class="cert">
+        <div class="cert-num">03</div>
+        <div class="cert-name">Extend</div>
+        <div class="cert-desc">Custom Workday apps, business logic extensions, tenant-native development.</div>
+      </div>
+      <div class="cert">
+        <div class="cert-num">04</div>
+        <div class="cert-name">Orchestrate</div>
+        <div class="cert-desc">Multi-step integration workflows and orchestrated data movement.</div>
+      </div>
+    </div>
+
+    <div class="wd-breakdown">
+      <div class="wd-block">
+        <h3>What I own end-to-end.</h3>
+        <p>
+          Every owned integration ships <strong>both halves</strong> — the Banner extract and the Workday connector. For inbound feeds touched by the implementation partner, I still owned the Banner side: writing the extract logic, generating the file, and getting it to the right place at the right cadence.
+        </p>
+        <ul>
+          <li>Banner Finance → Workday: accounting journals and ad hoc bank transactions (~11k lines/day)</li>
+          <li>Background check (Validity) — full Studio build, SOAP outbound and webhook inbound</li>
+          <li>All connector-based integrations across Core Connectors and document transformation</li>
+          <li>Complex calculated-field logic for benefits, payroll, and student feeds</li>
+          <li>Workday data extraction with 500+ line queries fitted to workbook format</li>
+          <li>Payroll history extraction and reconciliation</li>
+          <li>Python notification layer on every owned integration — no silent failures</li>
+        </ul>
+      </div>
+      <div class="wd-block">
+        <h3>Beyond integrations.</h3>
+        <p>
+          Banner payroll issues. Supplemental pay processing. Generic requests that don't fit a queue. In the absence of the DBA, I've handled <strong>clone activities and DBA work</strong> too. In domain or out of domain — if it lands on my desk, it gets completed.
+        </p>
+        <ul>
+          <li>Banner payroll issue resolution and supplemental pay pipelines</li>
+          <li>Database clone activities in DBA absence</li>
+          <li>Out-of-scope generic requests, completed in domain or out</li>
+          <li>Production support and on-call resolution across systems</li>
+          <li>Cross-functional coordination with HR, Payroll, FinAid, and IT</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section class="projects-section" id="projects">
+  <div class="eyebrow">Selected work</div>
+  <h2 class="section-title">Integrations that <em>shipped</em>.</h2>
+  <p class="section-intro">
+    A sample of the work — each one delivered, in production, and stress-tested against real users. Names redacted where appropriate.
+  </p>
+
+  <div class="project-list">
+    <div class="project">
+      <div class="project-num">01</div>
+      <div class="project-title"><span class="tag">Workday Studio · Inbound + Outbound</span>Background check integration</div>
+      <div class="project-desc">Full bidirectional Studio build with a screening vendor. Outbound SOAP request lifecycle, inbound webhook for results. Custom error handling and retry logic for partial failures.</div>
+      <div class="project-meta">
+        <span>Workday Studio</span>
+        <span>SOAP · Webhook</span>
+        <span class="impact">End-to-end · Owned</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-num">02</div>
+      <div class="project-title"><span class="tag">Banner Finance ↔ Workday · Flagship build</span>Accounting journals &amp; bank transactions</div>
+      <div class="project-desc">Two complementary daily integrations splitting Banner Finance activity into Workday: <strong>INT047</strong> (accounting journals, non-cash) and <strong>INT048</strong> (ad hoc bank transactions, ~11,300 lines/day). Designed the rule-code split logic with the AVP Finance after multiple iterations, built fund-to-ledger and bank-account mapping tables shared across both feeds, and resolved the Workday "claim on cash" clearing design with the implementation partner.</div>
+      <div class="project-meta">
+        <span>Oracle PL/SQL</span>
+        <span>Core Connector · SFTP</span>
+        <span class="impact">~11,300 lines/day</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-num">03</div>
+      <div class="project-title"><span class="tag">Workday Reporting · Data conversion foundation</span>Workday data extraction (500+ line queries)</div>
+      <div class="project-desc">Built the foundation data extracts that <em>every</em> integration leans on. Complex SQL — some queries running over 500 lines — fitted to Workday's workbook format with full required-to-map field coverage. Standing mapping tables maintained alongside the queries, reused across all owned builds. Includes payroll history extraction, staff and student base populations, labor distribution, and tax workbooks.</div>
+      <div class="project-meta">
+        <span>Workday Reporting</span>
+        <span>PL/SQL · Calc fields</span>
+        <span class="impact">Foundation for every feed</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-num">04</div>
+      <div class="project-title"><span class="tag">Python · Monitoring framework</span>Notification scripts on every integration</div>
+      <div class="project-desc">Standard Python notification layer attached to every owned integration. After each run, the script emails the end user and me with the outcome — what posted, what failed, and why. No silent failures, no integration gaps, no surprises the next morning. Built once, reused everywhere.</div>
+      <div class="project-meta">
+        <span>Python · SMTP</span>
+        <span>Cron scheduled</span>
+        <span class="impact">Zero blind spots</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-num">05</div>
+      <div class="project-title"><span class="tag">Workday Core Connector · Outbound</span>Benefits carrier feed</div>
+      <div class="project-desc">HSL 2.0 outbound integration covering Life, AD&amp;D, and LTD. Resolved a salary basis defect and closed a benefit termination gap. Built a Python review tool so business stakeholders could validate the file before each send.</div>
+      <div class="project-meta">
+        <span>Core Connector</span>
+        <span>Python · SFTP</span>
+        <span class="impact">Production · Live</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-num">06</div>
+      <div class="project-title"><span class="tag">Banner Oracle · Payroll</span>Retroactive payroll correction</div>
+      <div class="project-desc">Student minimum wage retro adjustment across 234 students. PHRMTIM / PHPMTIM / PHPCHKL pipeline, MWE earn code, NBRJOBS inserts, staging table architecture. Extensive Evisions Intellecheck troubleshooting.</div>
+      <div class="project-meta">
+        <span>Oracle PL/SQL</span>
+        <span>Banner Payroll</span>
+        <span class="impact">234 students paid</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-num">07</div>
+      <div class="project-title"><span class="tag">Workday Studio · SAML SSO</span>Evidence of Insurability</div>
+      <div class="project-desc">End-to-end EOI integration with carrier. Workday Studio build, SAML SSO setup, business process reordering for clean handoff. Validated end-to-end through full cycle.</div>
+      <div class="project-meta">
+        <span>Workday Studio</span>
+        <span>SAML · BP design</span>
+        <span class="impact">Validated end-to-end</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-num">08</div>
+      <div class="project-title"><span class="tag">Banner ↔ Vendor</span>Housing financial integration</div>
+      <div class="project-desc">eRezLife to Banner financial integration in production. Housing assignment integration built alongside. Resolved a deadlock incident post-launch and updated cohort filter logic across multiple iterations.</div>
+      <div class="project-meta">
+        <span>Banner Finance</span>
+        <span>Production support</span>
+        <span class="impact">$5.3M · 1,367 charges</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-num">09</div>
+      <div class="project-title"><span class="tag">Banner ↔ Workday</span>Workstudy awards integration</div>
+      <div class="project-desc">FWS award extract from RPRAWRD via Worker Payroll Input Async connector. Biweekly CSV delivery across a 241-student population. Dynamic aid year and term-gated logic.</div>
+      <div class="project-meta">
+        <span>Async Connector</span>
+        <span>Oracle PL/SQL</span>
+        <span class="impact">241 students</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-num">10</div>
+      <div class="project-title"><span class="tag">Banner ↔ Workday</span>External students inbound</div>
+      <div class="project-desc">sp_int009_student_extract — address, phone, and email normalization including Canadian postal codes. Population expanded to include next term dynamically; surgical fix added to include refund-eligible students.</div>
+      <div class="project-meta">
+        <span>Inbound EIB</span>
+        <span>PL/SQL</span>
+        <span class="impact">Dynamic population</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<div class="testimonial-section">
+  <div class="testimonial-inner">
+    <div class="eyebrow" style="justify-content: center;">In their words</div>
+    <div class="quote-mark">"</div>
+    <div class="quote-text" id="quote-text">
+      I've worked with quite a few data engineers over the years &mdash; many of them very good &mdash; but Paresh has <em>genuinely stood out</em>. A breath of fresh air.
+    </div>
+    <div class="quote-attr" id="quote-attr">— CRM Administrator</div>
+    <div class="quote-dots" id="quote-dots"></div>
+  </div>
+</div>
+
+<!-- ===== SKILLS ===== -->
+<section class="skills-section" id="skills">
+  <div class="eyebrow">The stack</div>
+  <h2 class="section-title">What I <em>actually</em> work in.</h2>
+
+  <div class="skills-grid">
+    <div class="skill-col">
+      <h4>Workday</h4>
+      <ul>
+        <li>Studio (XSLT, web services)<span class="level">Certified</span></li>
+        <li>Core Connectors<span class="level">Daily</span></li>
+        <li>EIB (inbound + outbound)<span class="level">Daily</span></li>
+        <li>Reporting<span class="level">Certified</span></li>
+        <li>Extend<span class="level">Certified</span></li>
+        <li>Orchestrate<span class="level">Certified</span></li>
+        <li>Calculated fields<span class="level">Advanced</span></li>
+        <li>Document transformation<span class="level">Daily</span></li>
+        <li>SAML SSO setup<span class="level">Production</span></li>
+      </ul>
+    </div>
+    <div class="skill-col">
+      <h4>Banner ERP</h4>
+      <ul>
+        <li>Oracle PL/SQL<span class="level">Expert</span></li>
+        <li>Packages &amp; procedures<span class="level">Daily</span></li>
+        <li>Triggers<span class="level">Daily</span></li>
+        <li>Banner Finance<span class="level">Production</span></li>
+        <li>Banner Payroll/HR<span class="level">Production</span></li>
+        <li>Banner FinAid<span class="level">Production</span></li>
+        <li>Banner Student<span class="level">Production</span></li>
+        <li>DBA / clone activities<span class="level">Backup</span></li>
+        <li>SQL Developer · Linux<span class="level">Daily</span></li>
+      </ul>
+    </div>
+    <div class="skill-col">
+      <h4>Adjacent</h4>
+      <ul>
+        <li>Python<span class="level">Daily</span></li>
+        <li>Flutter<span class="level">Side project</span></li>
+        <li>XSLT / XML<span class="level">Daily</span></li>
+        <li>SOAP / REST<span class="level">Daily</span></li>
+        <li>SFTP / MFT (JScape)<span class="level">Production</span></li>
+        <li>cXML / SAML<span class="level">Production</span></li>
+        <li>Vendor coordination<span class="level">Daily</span></li>
+        <li>Production incident response<span class="level">On call</span></li>
+        <li>Documentation<span class="level">Always</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact-section" id="contact">
+  <div class="eyebrow" style="justify-content: center;">Get in touch</div>
+  <h1 class="contact-title">Let's <em>talk</em>.</h1>
+  <p style="color: var(--ink-mute); max-width: 540px; margin: 0 auto; font-size: 17px; line-height: 1.6;">
+    Workday rollouts, Banner integrations, higher-ed data engineering, or just trading notes — I'm always happy to compare scars.
+  </p>
+  <div class="contact-links">
+    <a href="mailto:pareshjayaramgowda@gmail.com" class="contact-link">EMAIL →</a>
+    <a href="https://www.linkedin.com/in/pareshgowda" target="_blank" rel="noopener" class="contact-link">LINKEDIN →</a>
+    <a href="https://github.com/Pareshgowda" target="_blank" rel="noopener" class="contact-link">GITHUB →</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 Paresh Jayaram Gowda · Built with care · v1.0
+</footer>
+
+<script>
+  // ===== Animated counters =====
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.target);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const isFloat = target % 1 !== 0;
+    const duration = 1800;
+    const numSpan = el.querySelector('span');
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = target * eased;
+      numSpan.textContent = prefix + (isFloat ? val.toFixed(1) : Math.round(val)) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const counterObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !e.target.dataset.counted) {
+        e.target.dataset.counted = '1';
+        animateCounter(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.stat-num').forEach(function(el) {
+    counterObserver.observe(el);
+  });
+
+  // ===== Project clicks scroll to contact =====
+  document.querySelectorAll('.project').forEach(function(p) {
+    p.addEventListener('click', function() {
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ===== Rotating testimonials =====
+  const quotes = [
+    {
+      t: 'I\'ve worked with quite a few data engineers over the years &mdash; many of them very good &mdash; but Paresh has <em>genuinely stood out</em>. A breath of fresh air.',
+      a: '— CRM Administrator'
+    },
+    {
+      t: 'He\'s proactive, follows through, thinks ahead, and makes projects feel <em>easy and smooth</em>. All those little things have made working with him a breath of fresh air.',
+      a: '— CRM Administrator'
+    },
+    {
+      t: 'BLESS YOU! I am amazed at what you accomplished today. You <em>saved me and the team</em>. There are no words to share my appreciation.',
+      a: '— AVP Finance'
+    },
+    {
+      t: 'CELEBRATE! You successfully managed the <em>roller coaster</em> of issues, emotions, successes and failures. Great teamwork throughout it all.',
+      a: '— AVP Finance'
+    },
+    {
+      t: 'THANK YOU so much for all the work you have been and continue to do. <em>You are doing amazing</em> and I appreciate all you do.',
+      a: '— Director, Enterprise Applications'
+    },
+    {
+      t: 'Paresh was <em>so good to work with</em> and made this happen.',
+      a: '— Student Payroll Manager'
+    },
+    {
+      t: 'GREAT JOB TEAM!',
+      a: '— Vice President, Culture'
+    }
+  ];
+  const qText = document.getElementById('quote-text');
+  const qAttr = document.getElementById('quote-attr');
+  const qDots = document.getElementById('quote-dots');
+  let qIdx = 0;
+  quotes.forEach(function(_, i) {
+    const d = document.createElement('div');
+    d.className = 'quote-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', function() { setQuote(i); });
+    qDots.appendChild(d);
+  });
+  function setQuote(i) {
+    qIdx = i;
+    qText.style.opacity = 0;
+    setTimeout(function() {
+      qText.innerHTML = quotes[i].t;
+      qAttr.innerHTML = quotes[i].a;
+      qText.style.opacity = 1;
+      qDots.querySelectorAll('.quote-dot').forEach(function(d, j) {
+        d.classList.toggle('active', j === i);
+      });
+    }, 250);
+  }
+  setInterval(function() { setQuote((qIdx + 1) % quotes.length); }, 6000);
+</script>
+
+</body>
+</html>
